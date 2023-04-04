@@ -1,0 +1,58 @@
+.NavBarUl{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.liClass {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+}
+
+.link{
+    text-decoration: none;
+    color: white;
+}
+
+.link:hover {
+    color:white;
+}
+
+.internMenu {
+    padding: 0px 50px 0px 50px !important;
+}
+
+.bg-dark {
+    background: linear-gradient(45deg, rgba(14, 13, 13, 0.93), rgba(42, 41, 41, 0.95));
+    opacity: 0.9;
+}
+
+.underline {
+    display: inline;
+    position: relative;
+    overflow: hidden;
+}
+
+.underline:after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    right: 0;
+    width: 0;
+    bottom: -5px;
+    background: white;
+    height: 3px;
+    transition-property: width;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-out;
+}
+
+.underline:hover:after, .underline:focus:after, .underline:active:after {
+    left: 0;
+    right: auto;
+    width: 100%;
+}

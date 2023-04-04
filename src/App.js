@@ -1,24 +1,41 @@
-import logo from './logo.svg';
 import './App.css';
+import React, {useState} from "react";
+// Components
+import NavBar from "./components/Nav/Nav";
+//import ProductList from './components/Products/ProductList';
+// MaterialUI
+//import { unstable_ClassNameGenerator } from '@mui/material';
+// React Router DOM
+import {BrowserRouter as Router, Routes, Route} from "react-router-dom"
+// PAGES
+import Home from "./pages/Home/Home.js"
+import Servicios from "./pages/Servicios/Servicios.js"
+import Tienda from "./pages/Tienda/Tienda"
+import ProductDetail from "./pages/Tienda/ProductDetail"
+import Contact from "./pages/Contact/Contact.js"
 
 function App() {
+
+  const [allProducts, setAllProducts] = useState([]); //Array de productos
+  const [total, setTotal] = useState(0);  //Total a pagar
+  const [cart, setCart] = useState(0);  //Cantidad de productos en carrito
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Router>
+        <div>
+          <NavBar allProducts = {allProducts} setAllProducts = {setAllProducts} total = {total}  
+            setTotal={setTotal}  cart = {cart} setCart = {setCart} />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/servicios" element={<Servicios />} />
+            <Route path="/tienda" element={<Tienda cart = {cart} setCart = {setCart} />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/detail/:id" element={<ProductDetail />}></Route>
+          </Routes>
+        </div>
+      </Router>
+    </>
   );
 }
 
