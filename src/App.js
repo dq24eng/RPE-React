@@ -5,6 +5,7 @@ import NavBar from "./components/Nav/Nav";
 //import ProductList from './components/Products/ProductList';
 // MaterialUI
 //import { unstable_ClassNameGenerator } from '@mui/material';
+
 // React Router DOM
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom"
 // PAGES
@@ -31,7 +32,7 @@ function App() {
             <Route path="/servicios" element={<Servicios />} />
             <Route path="/tienda" element={<Tienda cart = {cart} setCart = {setCart} />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/detail/:id" element={<ProductDetail />}></Route>
+            <Route path="/detail/:id" element={<ProductDetail />} />
           </Routes>
         </div>
       </Router>

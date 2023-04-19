@@ -32,7 +32,6 @@ const ProductDetail = () => {
                         </div>
                         
                 }
-
             </div>
         </div>
     )
@@ -40,13 +39,3 @@ const ProductDetail = () => {
 
 export default ProductDetail
 
-/* 
-            <div>
-                <div> <img src={producto.url} alt={producto.name} height="285" width="200" /> </div>
-                <div className='info-product'> 
-                    <p>{producto.name}</p>
-                    <p>${producto.price} </p>
-                </div>
-            </div>
-
-*/

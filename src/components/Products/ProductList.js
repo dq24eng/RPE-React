@@ -3,6 +3,8 @@ import getFetch from "../Data/data";
 import './ProductList.css'
 //UIBall
 import { DotSpinner } from '@uiball/loaders'
+//Bootstrap
+import Button from 'react-bootstrap/Button';
 //PROP Types 
 import { PropTypes } from 'prop-types';
 //React Router DOM
@@ -26,22 +28,25 @@ const ProductList = ({allProducts, setAllProducts, total, setTotal, cart, setCar
 
     return (
         <div className="container-items" >
-
             {loading ? <div className='loadingBlock'> <DotSpinner size={35} color="black" /> <p>Cargando</p>  </div> : 
-
             products.map ((product) => (
-                <Link to={`/detail/${product.id}`}>
-                    <div className='item' key={product.id}>
-                        <div className='imageClass'> <img src={product.url} alt={product.name} height="285" width="200" /> </div>
-                        <div className='info-product'> 
-                            <p className='title'>{product.name}</p>
-                            <p className='price'>${product.price} </p>
-                            <button onClick={añadirCarrito}>Añadir al carrito</button>
+                <div className='product-cart'>
+                    <Link to={`/detail/${product.id}`} className='link-class'>
+                        <div className='item' key={product.id}>
+                            <div className='imageClass'> 
+                                <img src={product.url} alt={product.name} height="285" width="200" /> 
+                            </div>
+                            <div className='info-product'> 
+                                <p className='title'>{product.name}</p>
+                                <p className='price'>${product.price} </p>
+                            </div>
                         </div>
+                    </Link>
+                    <div className='product-button'> 
+                        <Button variant="dark" onClick={añadirCarrito} className='btn align-self-center'>Añadir al carrito</Button>
                     </div>
-                </Link>
+                </div>
             ))}
-        
         </div>
     )
 }
@@ -51,3 +56,5 @@ ProductList.propTypes = {
 };
 
 export default ProductList;
+
+//<button onClick={añadirCarrito}>Añadir al carrito</button>

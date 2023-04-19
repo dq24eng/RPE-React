@@ -1,0 +1,12 @@
+h1 {
+    color: black !important;
+    text-align: center !important;
+    padding: 10px 0 10px 0;
+}
+
+.Form{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+}
