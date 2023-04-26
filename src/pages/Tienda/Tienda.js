@@ -1,16 +1,19 @@
 import ProductList from '../../components/Products/ProductList';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import "./Tienda.css";
 import {TextField, Button} from '@mui/material';
-import getFetch from "../../components/Data/data";
+import { ItemsCart } from "../../contexts/ItemsContext"
 
-const Tienda = ({cart, setCart}) => {
+const Tienda = ({products, setProducts}) => {
 
-  const [allProducts, setAllProducts] = useState([]); //Array de productos
   const [total, setTotal] = useState(0);  //Total a pagar
   const [value, setValue] = useState("");
-  const [products, setProducts] = useState([]);
   const [idProducts, setIdProducts] = useState([]);
+  const [clickOnSubmit, setClickOnSubmit] = useState (false);
+  const [productsFilter, setProductsFilter] = useState ([]);
+  const { cart, setCart } = useContext(ItemsCart);
+
+  //console.log(products)
 
   const onChange = (e) => {
     setValue(e.target.value);
@@ -18,36 +21,29 @@ const Tienda = ({cart, setCart}) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    let arrayProducts = []
-
+    let arrayProducts = [];
+    let newArrayProducts = [];
+    setClickOnSubmit(true)
     products.map ((product) => (
-      //arrayProducts.push(product.name)
-      //console.log(product.name.toString().toLowerCase().includes(value.toLowerCase()))
-      //product.name.toString().toLowerCase().includes(value.toLowerCase()) ? console.log("llegue") : null
       product.name.toString().toLowerCase().includes(value.toLowerCase()) ? arrayProducts.push(product.id) : null
     ))
 
-    console.log(arrayProducts)
-    //console.log(arrayProducts)
-    /*for (let i = 0; i < arrayProducts.length; i++) {
-      if (arrayProducts[i].toString().toLowerCase().includes(value.toLowerCase())){
-        //arraySearchProd.push(arrayProducts[i])
-        //idProducts.push(i+1)
-        setIdProducts{[...idProducts,i+1]}
-      }
-    }*/
     setIdProducts(arrayProducts)
-    //setIdProducts = [{arrayProducts}]
 
-    console.log(idProducts)
-    
+    for (let i = 0; i < products.length; i++) {
+      for (let j=  0; j < arrayProducts.length; j++) {
+        if (products[i].id == arrayProducts[j]) {
+          newArrayProducts.push(products[i]) 
+        }
+      }
+    }
+
+    setValue("")
+    setProductsFilter(newArrayProducts)
+    //console.log(newArrayProducts)
   };
 
-  useEffect (()=>{
-    getFetch
-    .then((resp) => setProducts(resp))
-    .catch((err) => console.log(err))
-  },[])
+  //console.log(productsFilter)
 
   return (
     <div>
@@ -64,17 +60,89 @@ const Tienda = ({cart, setCart}) => {
           <Button variant="contained" type="submit" > Buscar </Button>
         </form>
 
+        {
+          clickOnSubmit ? 
+            ((productsFilter.length != 0) ?
+              (<div className='p-2 d-flex justify-content-center'>
+                <ProductList products = {products} setProducts = {setProducts} productsFilter = {productsFilter} 
+                clickOnSubmit = {true} />
+              </div>) : <h2>No se encontraron resultados</h2>)
+            :
+            <div className='p-2 d-flex justify-content-center'>
+              <ProductList products = {productsFilter} setProducts = {setProducts} productsFilter = {productsFilter} 
+              clickOnSubmit = {true} />
+            </div> 
+        }
 
+        {
+          console.log(products)
+        }
 
-        <div >
-
-        </div>
     </div>
   );
 };
 
 export default Tienda;
 
+
+
+/*
+
+productsFilter.map ((product) => (
+                <div className='product-cart'>
+                    <Link to={`/detail/${product.id}`} className='link-class'>
+                        <div className='item' key={product.id}>
+                            <div className='imageClass'> 
+                                <img src={product.url} alt={product.name} height="285" width="200" /> 
+                            </div>
+                            <div className='info-product'> 
+                                <p className='title'>{product.name}</p>
+                                <p className='price'>${product.price} </p>
+                            </div>
+                        </div>
+                    </Link>
+                    <div className='product-button'> 
+                        <Button variant="dark" onClick={añadirCarrito} className='btn align-self-center'>Añadir al carrito</Button>
+                    </div>
+                </div>
+              ))
+
+*/
+
+
+
+
+/*
+
+{
+          clickOnSubmit ? 
+            <div className='p-2 d-flex justify-content-center'>
+            <ProductList allProducts = {allProducts} setAllProducts = {setAllProducts} total = {total}  
+              setTotal={setTotal}  cart = {cart} setCart = {setCart} />
+            </div>  
+            :
+            products.map ((product) => (
+              <div className='product-cart'>
+                  <Link to={`/detail/${product.id}`} className='link-class'>
+                      <div className='item' key={product.id}>
+                          <div className='imageClass'> 
+                              <img src={product.url} alt={product.name} height="285" width="200" /> 
+                          </div>
+                          <div className='info-product'> 
+                              <p className='title'>{product.name}</p>
+                              <p className='price'>${product.price} </p>
+                          </div>
+                      </div>
+                  </Link>
+                  <div className='product-button'> 
+                      <Button variant="dark" onClick={añadirCarrito} className='btn align-self-center'>Añadir al carrito</Button>
+                  </div>
+              </div>
+          ))
+
+        }
+
+*/
 
 /*
 

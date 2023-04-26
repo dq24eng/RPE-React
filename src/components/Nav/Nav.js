@@ -1,4 +1,4 @@
-import React from "react"
+import { useContext } from "react";
 import "./Nav.css"
 import logo from "../../images/logo.png"
 //Bootstrap
@@ -7,8 +7,13 @@ import Navbar from 'react-bootstrap/Navbar';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 // React Router DOM
 import {Link} from 'react-router-dom';
+// CONTEXT
+import { ItemsCart } from "../../contexts/ItemsContext";
 
-const NavigationBar = ({allProducts, setAllProducts, total, setTotal, cart, setCart}) => {
+//const NavigationBar = ({allProducts, setAllProducts, total, setTotal, cart, setCart}) => {
+const NavigationBar = ({products, setProducts, total, setTotal}) => {
+
+    const { cart, setCart } = useContext(ItemsCart);
 
     return (
         <> 
@@ -42,7 +47,6 @@ const NavigationBar = ({allProducts, setAllProducts, total, setTotal, cart, setC
         </>
     );
 };
-
 
 export default NavigationBar;
 

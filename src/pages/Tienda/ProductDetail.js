@@ -1,36 +1,33 @@
 import React, { useState, useEffect } from 'react'
 import "./ProductDetail.css"
-import getFetch from "../../components/Data/data";
+//import getFetch from "../../components/Data/data";
 import {useParams} from 'react-router-dom';
 
-const ProductDetail = () => {
+const ProductDetail = ({products, setProducts}) => {
 
-    const [product, setProduct] = useState([]);
-    const [loading, setLoading] = useState(true);
+    //const [loading, setLoading] = useState(true);
     let {id} = useParams ();
-
-    useEffect (()=>{
-        getFetch
-        .then((resp) => setProduct(resp))
-        .catch((err) => console.log(err))
-        .finally(() => setLoading(false))
-    },[])
+    let productos1 = []
+    const productos = products.map((prod)=>{
+        if (id==prod.id){
+            productos1 = prod
+        }
+    })
 
     return (
         <div>
             <div className='Prod'>
                 {
-                    loading ? <div>Cargando</div> :
+                    products.length==0 ? <div>Cargando</div> :
                         <div>
                             <div> 
-                                <img src={product[id-1].urlDetail} alt={product[id-1].name} height="400" width="350" />
+                                <img src={productos1.img} alt={productos1.name} height="400" width="350" />
                             </div>
-                            <p>{product[id-1].name}</p>
-                            <p>{product[id-1].description}</p>
-                            <p>{product[id-1].code}</p>
-                            <p>$ {product[id-1].price}</p>
+                            <p>{productos1.name}</p>
+                            <p>{productos1.description}</p>
+                            <p>{productos1.code}</p>
+                            <p>$ {productos1.price}</p>
                         </div>
-                        
                 }
             </div>
         </div>
@@ -38,4 +35,5 @@ const ProductDetail = () => {
 }
 
 export default ProductDetail
+
 

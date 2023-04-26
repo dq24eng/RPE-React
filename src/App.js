@@ -1,11 +1,7 @@
 import './App.css';
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 // Components
 import NavBar from "./components/Nav/Nav";
-//import ProductList from './components/Products/ProductList';
-// MaterialUI
-//import { unstable_ClassNameGenerator } from '@mui/material';
-
 // React Router DOM
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom"
 // PAGES
@@ -14,30 +10,51 @@ import Servicios from "./pages/Servicios/Servicios.js"
 import Tienda from "./pages/Tienda/Tienda"
 import ProductDetail from "./pages/Tienda/ProductDetail"
 import Contact from "./pages/Contact/Contact.js"
+// CONTEXT
+import { ItemsCartProvider } from "./contexts/ItemsContext";
+// FIREBASE 
+import { db } from './firebase/firebaseConfig';
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 function App() {
 
-  const [allProducts, setAllProducts] = useState([]); //Array de productos
   const [total, setTotal] = useState(0);  //Total a pagar
-  const [cart, setCart] = useState(0);  //Cantidad de productos en carrito
+  const q = query(collection(db, "products"));
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const getProductsRP = async() => {
+        const querySnapshot = await getDocs(q);
+        const prods = [];
+        querySnapshot.forEach((doc) => {
+            prods.push({...doc.data()})
+        });
+        setProducts(prods);
+    };
+    getProductsRP();
+  }, []);
 
   return (
-    <>
-      <Router>
-        <div>
-          <NavBar allProducts = {allProducts} setAllProducts = {setAllProducts} total = {total}  
-            setTotal={setTotal}  cart = {cart} setCart = {setCart} />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/servicios" element={<Servicios />} />
-            <Route path="/tienda" element={<Tienda cart = {cart} setCart = {setCart} />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/detail/:id" element={<ProductDetail />} />
-          </Routes>
-        </div>
-      </Router>
-    </>
+      <ItemsCartProvider>
+        <Router>
+          <div>
+            <NavBar products = {products} setProducts = {setProducts} total = {total}  setTotal={setTotal} />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/servicios" element={<Servicios />} />
+              <Route path="/tienda" element={<Tienda products = {products} setProducts = {setProducts} />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/detail/:id" element={<ProductDetail products = {products} setProducts = {setProducts} />} />
+            </Routes>
+          </div>
+        </Router>
+      </ItemsCartProvider>
   );
 }
 
 export default App;
+
+//<NavBar allProducts = {allProducts} setAllProducts = {setAllProducts} total = {total}  setTotal={setTotal}  cart = {cart} setCart = {setCart} />
+
+
+
