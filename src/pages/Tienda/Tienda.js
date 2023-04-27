@@ -3,17 +3,38 @@ import React, {useState, useEffect, useContext} from 'react';
 import "./Tienda.css";
 import {TextField, Button} from '@mui/material';
 import { ItemsCart } from "../../contexts/ItemsContext"
+// FIREBASE 
+import { db } from '../../firebase/firebaseConfig';
+import { collection, query, getDocs } from "firebase/firestore";
 
-const Tienda = ({products, setProducts}) => {
+import NavBar from '../../components/Nav/Nav';
 
-  const [total, setTotal] = useState(0);  //Total a pagar
+const Tienda = () => {
+
   const [value, setValue] = useState("");
   const [idProducts, setIdProducts] = useState([]);
   const [clickOnSubmit, setClickOnSubmit] = useState (false);
   const [productsFilter, setProductsFilter] = useState ([]);
   const { cart, setCart } = useContext(ItemsCart);
+  const q = query(collection(db, "products"));
+  const [products, setProducts] = useState([]);
 
-  //console.log(products)
+  const [cartProducts, setCartProducts] = useState([]); //Productos que se van añadiendo al carrito
+  const [total, setTotal] = useState(0);  //Total a pagar
+  const [countProducts, setCountProducts] = useState(0); //Contador de productos  
+
+  useEffect(() => {
+    const getProductsRP = async() => {
+        const querySnapshot = await getDocs(q);
+        const prods = [];
+        querySnapshot.forEach((doc) => {
+            prods.push({...doc.data(), id: doc.id})
+        });
+        setProducts(prods);
+    };
+    getProductsRP();
+  }, []);
+
 
   const onChange = (e) => {
     setValue(e.target.value);
@@ -40,13 +61,12 @@ const Tienda = ({products, setProducts}) => {
 
     setValue("")
     setProductsFilter(newArrayProducts)
-    //console.log(newArrayProducts)
-  };
 
-  //console.log(productsFilter)
+  };
 
   return (
     <div>
+
         <h1>Nuestra Tienda</h1>
 
         <form className="Form" onSubmit={onSubmit} >
@@ -60,23 +80,10 @@ const Tienda = ({products, setProducts}) => {
           <Button variant="contained" type="submit" > Buscar </Button>
         </form>
 
-        {
-          clickOnSubmit ? 
-            ((productsFilter.length != 0) ?
-              (<div className='p-2 d-flex justify-content-center'>
-                <ProductList products = {products} setProducts = {setProducts} productsFilter = {productsFilter} 
-                clickOnSubmit = {true} />
-              </div>) : <h2>No se encontraron resultados</h2>)
-            :
-            <div className='p-2 d-flex justify-content-center'>
-              <ProductList products = {productsFilter} setProducts = {setProducts} productsFilter = {productsFilter} 
-              clickOnSubmit = {true} />
-            </div> 
-        }
-
-        {
-          console.log(products)
-        }
+        <div className='p-2 d-flex justify-content-center'>
+          <ProductList products = {products} setProducts = {setProducts} productsFilter = {productsFilter} 
+            clickOnSubmit = {clickOnSubmit} />
+        </div>
 
     </div>
   );
@@ -150,5 +157,22 @@ productsFilter.map ((product) => (
           <ProductList allProducts = {allProducts} setAllProducts = {setAllProducts} total = {total}  
             setTotal={setTotal}  cart = {cart} setCart = {setCart} />
         </div>
+
+*/
+
+
+/*
+
+clickOnSubmit ? 
+            ((productsFilter.length != 0) ?
+              (<div className='p-2 d-flex justify-content-center'>
+                <ProductList products = {products} setProducts = {setProducts} productsFilter = {productsFilter} 
+                clickOnSubmit = {true} />
+              </div>) : <h2>No se encontraron resultados</h2>)
+            :
+            <div className='p-2 d-flex justify-content-center'>
+              <ProductList products = {products} setProducts = {setProducts} productsFilter = {productsFilter} 
+              clickOnSubmit = {true} />
+            </div> 
 
 */

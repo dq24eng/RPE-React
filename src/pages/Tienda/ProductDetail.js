@@ -1,33 +1,47 @@
 import React, { useState, useEffect } from 'react'
 import "./ProductDetail.css"
-//import getFetch from "../../components/Data/data";
 import {useParams} from 'react-router-dom';
+// FIREBASE 
+import { db } from '../../firebase/firebaseConfig';
+import { collection, query, where, getDocs, documentId } from "firebase/firestore";
+//UIBall
+import { DotSpinner } from '@uiball/loaders'
 
-const ProductDetail = ({products, setProducts}) => {
+const ProductDetail = () => {
 
-    //const [loading, setLoading] = useState(true);
+    const [product, setProduct] = useState({});
     let {id} = useParams ();
-    let productos1 = []
-    const productos = products.map((prod)=>{
-        if (id==prod.id){
-            productos1 = prod
-        }
-    })
+
+    useEffect(() => {
+        const getProductsRP = async() => {
+            const q = query(collection(db, "products"), where (documentId(), "==", id));
+            const prod = [];
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc) => {
+                prod.push({...doc.data()})
+            });
+            setProduct(prod);
+        };
+        getProductsRP();
+    }, [id]);
+
+    let producto = new Object()
+    producto = product[0]
 
     return (
         <div>
-            <div className='Prod'>
-                {
-                    products.length==0 ? <div>Cargando</div> :
-                        <div>
-                            <div> 
-                                <img src={productos1.img} alt={productos1.name} height="400" width="350" />
-                            </div>
-                            <p>{productos1.name}</p>
-                            <p>{productos1.description}</p>
-                            <p>{productos1.code}</p>
-                            <p>$ {productos1.price}</p>
+            <div className='Prod' key={product.id}>
+                {   
+                    (producto==undefined) ? <div className='loadingBlock'> <DotSpinner size={35} color="black" /> <p>Cargando</p>  </div> :
+                    <div> 
+                        <div> 
+                            <img src={producto.img} alt={producto.name} height="400" width="350" />
                         </div>
+                        <p>{producto.name}</p>
+                        <p>{producto.description}</p>
+                        <p>{producto.code}</p>
+                        <p>$ {producto.price}</p>
+                    </div>
                 }
             </div>
         </div>
@@ -35,5 +49,4 @@ const ProductDetail = ({products, setProducts}) => {
 }
 
 export default ProductDetail
-
 

@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import "./Nav.css"
 import logo from "../../images/logo.png"
 //Bootstrap
@@ -9,15 +9,16 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import {Link} from 'react-router-dom';
 // CONTEXT
 import { ItemsCart } from "../../contexts/ItemsContext";
+import { act } from "react-dom/test-utils";
 
-//const NavigationBar = ({allProducts, setAllProducts, total, setTotal, cart, setCart}) => {
-const NavigationBar = ({products, setProducts, total, setTotal}) => {
+const NavigationBar = (hidingNav) => {
 
     const { cart, setCart } = useContext(ItemsCart);
+    const [active, setActive] = useState(false);
 
     return (
         <> 
-            <Navbar bg="dark" variant="dark" className="justify-content-center d-flex p-2 w-100" expand="lg">
+            <Navbar bg="dark" variant="dark" className="justify-content-center d-flex p-2 w-100" expand="lg" >
                 <Container className="m-0 ">
                     <Navbar.Brand href="#home" className="d-flex w-100">
                         <ul className="NavBarUl w-100 d-flex m-0"> 
@@ -32,9 +33,12 @@ const NavigationBar = ({products, setProducts, total, setTotal}) => {
                                 <Link className="internMenu link underline" to="/tienda"> TIENDA </Link>
                                 <Link className="internMenu link underline" to="/contact"> CONTACTO </Link>
                             </div>
-                            <div className="shopCartClass">
+                            <div className="shopCartClass" onClick={() => setActive(!active)}>
                                 <li>
-                                    <div style={{display: "flex"}} >
+                                    <div style={{display: "flex"}} className={`${active ? '' : 'hidden-cart'}`}>
+                                        {
+                                            
+                                        }
                                         <ShoppingCartIcon sx={{color: "white"}}/>   
                                         <span style={{color: "white"}}>{cart}</span> 
                                     </div>

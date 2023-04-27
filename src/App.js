@@ -12,39 +12,20 @@ import ProductDetail from "./pages/Tienda/ProductDetail"
 import Contact from "./pages/Contact/Contact.js"
 // CONTEXT
 import { ItemsCartProvider } from "./contexts/ItemsContext";
-// FIREBASE 
-import { db } from './firebase/firebaseConfig';
-import { collection, query, where, getDocs } from "firebase/firestore";
 
 function App() {
-
-  const [total, setTotal] = useState(0);  //Total a pagar
-  const q = query(collection(db, "products"));
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    const getProductsRP = async() => {
-        const querySnapshot = await getDocs(q);
-        const prods = [];
-        querySnapshot.forEach((doc) => {
-            prods.push({...doc.data()})
-        });
-        setProducts(prods);
-    };
-    getProductsRP();
-  }, []);
 
   return (
       <ItemsCartProvider>
         <Router>
           <div>
-            <NavBar products = {products} setProducts = {setProducts} total = {total}  setTotal={setTotal} />
+            <NavBar />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/servicios" element={<Servicios />} />
-              <Route path="/tienda" element={<Tienda products = {products} setProducts = {setProducts} />} />
+              <Route path="/tienda" element={<Tienda />} />
               <Route path="/contact" element={<Contact />} />
-              <Route path="/detail/:id" element={<ProductDetail products = {products} setProducts = {setProducts} />} />
+              <Route path="/detail/:id" element={<ProductDetail />} />
             </Routes>
           </div>
         </Router>
@@ -53,8 +34,6 @@ function App() {
 }
 
 export default App;
-
-//<NavBar allProducts = {allProducts} setAllProducts = {setAllProducts} total = {total}  setTotal={setTotal}  cart = {cart} setCart = {setCart} />
 
 
 

@@ -17,7 +17,7 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 
 const ProductList = ({products, setProducts, productsFilter, clickOnSubmit }) => {
 
-    console.log(products, setProducts, productsFilter, clickOnSubmit)
+    //console.log(products, setProducts, productsFilter, clickOnSubmit)
     //console.log(productsFilter)
     //const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -28,8 +28,6 @@ const ProductList = ({products, setProducts, productsFilter, clickOnSubmit }) =>
 
     setTimeout(()=>{setLoading(false)}, 2000)
     clickOnSubmit ? productos = productsFilter : productos = products;
-
-    //console.log(products)
 
     return (
         <div className="container-items" >
@@ -61,33 +59,3 @@ ProductList.propTypes = {
 };
 
 export default ProductList;
-
-    /*useEffect(() => {
-        const getProductsRP = async() => {
-            try {
-                const querySnapshot = await getDocs(q);
-                const prods = [];
-                querySnapshot.forEach((doc) => {
-                    prods.push({...doc.data()})
-                });
-                setProductsRP(prods);
-                console.log(prods)
-            } finally {
-                setLoading(false)
-            }
-        }
-        getProductsRP();
-        //(productsRP.length == 0) ? setLoading(false) : setLoading(true)
-    }, []);*/
-
-    /*useEffect (()=>{
-        getFetch
-        .then((resp) => setProducts(resp))
-        .catch((err) => console.log(err))
-        .finally(() => setLoading(false))
-    },[])*/
-
-    //console.log(productos)
-
-    //(products.length == 0) ? setLoading(true) : setLoading(false)
-
