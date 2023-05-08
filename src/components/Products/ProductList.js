@@ -17,14 +17,10 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 
 const ProductList = ({products, setProducts, productsFilter, clickOnSubmit }) => {
 
-    //console.log(products, setProducts, productsFilter, clickOnSubmit)
-    //console.log(productsFilter)
-    //const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     let productos = []
     const {cart, setCart, añadirCarrito} = useContext(ItemsCart);
     const q = query(collection(db, "products"));
-    //const [productsRP, setProductsRP] = useState([]);
 
     setTimeout(()=>{setLoading(false)}, 2000)
     clickOnSubmit ? productos = productsFilter : productos = products;
@@ -46,7 +42,11 @@ const ProductList = ({products, setProducts, productsFilter, clickOnSubmit }) =>
                         </div>
                     </Link>
                     <div className='product-button'> 
-                        <Button variant="dark" onClick={añadirCarrito} className='btn align-self-center'>Añadir al carrito</Button>
+                        <Button variant="dark" 
+                        onClick={()=> {añadirCarrito(product)} } 
+                        className='btn align-self-center'>
+                                Añadir al carrito
+                        </Button>
                     </div>
                 </div>
             ))}
