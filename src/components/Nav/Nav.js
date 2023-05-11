@@ -18,18 +18,18 @@ const NavigationBar = () => {
     const { cart, setCart, allProductsCart} = useContext(ItemsCart);
     const [active, setActive] = useState(false);
 
-    let productos = JSON.parse(localStorage.getItem('products'))
+    let productos = JSON.parse(localStorage.getItem('products')) || {}
     let total = 0
     let productosCarrito = []
 
-    productos.map((producto) => {
+    if(productos.length != 0) {productos.map((producto) => {
         for (let i=0;i<allProductsCart.length;i++){
             if ((producto.id == allProductsCart[i].id)&&(allProductsCart[i].q>0)){
                 producto.quantity = parseInt(allProductsCart[i].q)
                 productosCarrito.push(producto)
             }
         }
-    })
+    })}
 
     function onDeleteProduct () {}
     function onCleanCart () {}
