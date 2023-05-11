@@ -22,7 +22,9 @@ const NavigationBar = () => {
     let total = 0
     let productosCarrito = []
 
-    if(productos.length != 0) {productos.map((producto) => {
+    
+
+    if((productos.length != 0) && (productos.length != undefined)) {productos.map((producto) => {
         for (let i=0;i<allProductsCart.length;i++){
             if ((producto.id == allProductsCart[i].id)&&(allProductsCart[i].q>0)){
                 producto.quantity = parseInt(allProductsCart[i].q)
@@ -30,6 +32,7 @@ const NavigationBar = () => {
             }
         }
     })}
+
 
     function onDeleteProduct () {}
     function onCleanCart () {}
