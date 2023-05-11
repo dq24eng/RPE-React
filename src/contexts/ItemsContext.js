@@ -2,7 +2,7 @@ import { createContext, useState, useEffect } from "react";
 export const ItemsCart = createContext(); // Creamos el contexto utilizando el Hook
 
 let initialCart = 0;
-let q = JSON.parse(localStorage.getItem('quantity'));
+let q = JSON.parse(localStorage.getItem('quantity')) || [0, 0, 0, 0];
 let cant = [{id: q[0], q: 0}, {id: q[1], q: 0}, {id: q[2], q: 0}, {id: q[3], q: 0}];
 
 export const ItemsCartProvider = ({ children }) => {
