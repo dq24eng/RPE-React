@@ -15,12 +15,13 @@ import { act } from "react-dom/test-utils";
 
 const NavigationBar = () => {
 
-    const { cart, setCart, allProductsCart} = useContext(ItemsCart);
+    const { cart, setCart, allProductsCart, onCleanCart, onDeleteProduct, productosCarrito} = useContext(ItemsCart);
     const [active, setActive] = useState(false);
     //const [updateCart, setUpdateCart] = useState([]);
-
-    let productos = JSON.parse(localStorage.getItem('products')) || {}
     let total = 0
+
+    /*let productos = JSON.parse(localStorage.getItem('products')) || {}
+    
     let productosCarrito = []
     let newCart = []
 
@@ -45,7 +46,7 @@ const NavigationBar = () => {
 
     function onCleanCart () {
         //return productosCarrito = []
-    }
+    }*/
 
     return (
         <> 
