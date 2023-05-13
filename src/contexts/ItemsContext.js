@@ -18,19 +18,21 @@ export const ItemsCartProvider = ({ children }) => {
 
   const addProduct =(item, quantity) =>{
     setCart(cart+1)
-    for (let i=0; i<q.length; i++) {
+    /*for (let i=0; i<q.length; i++) {
       if (item.id == cant[i].id){
         cant[i].q = cant[i].q + 1
       }
-    }
+    }*/
     if(isInCart(item.id)){
       setProductosCarrito (productosCarrito.map(product =>{
-        return product.id === item.id ? {...product,quantity:product.quantity + quantity} : product
+        console.log("entre")
+        return product.id === item.id ? {...product,quantity:product.quantity + 1} : product
       }));
-
     }else{
+      quantity =1;
       setProductosCarrito ([...productosCarrito,{...item,quantity}]);
     }
+
   }
   
   const isInCart = (id) => productosCarrito.find((product) => product.id === id) ? true : false;
