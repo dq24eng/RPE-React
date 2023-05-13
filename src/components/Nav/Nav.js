@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import "./Nav.css"
 import logo from "../../images/logo.png"
 //Bootstrap
@@ -17,12 +17,12 @@ const NavigationBar = () => {
 
     const { cart, setCart, allProductsCart} = useContext(ItemsCart);
     const [active, setActive] = useState(false);
+    //const [updateCart, setUpdateCart] = useState([]);
 
     let productos = JSON.parse(localStorage.getItem('products')) || {}
     let total = 0
     let productosCarrito = []
-
-    
+    let newCart = []
 
     if((productos.length != 0) && (productos.length != undefined)) {productos.map((producto) => {
         for (let i=0;i<allProductsCart.length;i++){
@@ -34,8 +34,18 @@ const NavigationBar = () => {
     })}
 
 
-    function onDeleteProduct () {}
-    function onCleanCart () {}
+    const onDeleteProduct = (product) => {
+        const results = productosCarrito.filter(item => item.id !== product.id);
+        newCart = results
+    }
+
+    useEffect(()=>{
+        console.log("update newCart")
+    },[newCart]);
+
+    function onCleanCart () {
+        //return productosCarrito = []
+    }
 
     return (
         <> 

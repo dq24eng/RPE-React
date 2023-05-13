@@ -70,8 +70,6 @@ const Tienda = () => {
 
   };
 
-  //console.log(allProductsCart)
-
   return (
     <div>
 
