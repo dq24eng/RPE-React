@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import "./Nav.css"
 import logo from "../../images/logo.png"
 //Bootstrap
@@ -10,43 +10,16 @@ import {Link} from 'react-router-dom';
 // CONTEXT
 import { ItemsCart } from "../../contexts/ItemsContext";
 import { act } from "react-dom/test-utils";
-// FIREBASE
-//import productsSS from "../Data/DataFirebase"
 
 const NavigationBar = () => {
 
-    const { cart, setCart, allProductsCart, onCleanCart, onDeleteProduct, productosCarrito} = useContext(ItemsCart);
+    const { cart, setCart, addProduct, allProductsCart, removeProduct, productosCarrito} = useContext(ItemsCart);
     const [active, setActive] = useState(false);
-    //const [updateCart, setUpdateCart] = useState([]);
     let total = 0
-
-    /*let productos = JSON.parse(localStorage.getItem('products')) || {}
-    
-    let productosCarrito = []
-    let newCart = []
-
-    if((productos.length != 0) && (productos.length != undefined)) {productos.map((producto) => {
-        for (let i=0;i<allProductsCart.length;i++){
-            if ((producto.id == allProductsCart[i].id)&&(allProductsCart[i].q>0)){
-                producto.quantity = parseInt(allProductsCart[i].q)
-                productosCarrito.push(producto)
-            }
-        }
-    })}
-
-
-    const onDeleteProduct = (product) => {
-        const results = productosCarrito.filter(item => item.id !== product.id);
-        newCart = results
-    }
-
-    useEffect(()=>{
-        console.log("update newCart")
-    },[newCart]);
 
     function onCleanCart () {
         //return productosCarrito = []
-    }*/
+    }
 
     return (
         <> 
@@ -97,7 +70,7 @@ const NavigationBar = () => {
                                                     strokeWidth='1.5'
                                                     stroke='currentColor'
                                                     className='icon-close'
-                                                    onClick={() => onDeleteProduct(product)}
+                                                    onClick={() => removeProduct(product)}
                                                 >
                                                     <path strokeLinecap='round' strokeLinejoin='round' d='M6 18L18 6M6 6l12 12'/>
                                                 </svg>

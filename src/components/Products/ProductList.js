@@ -19,7 +19,7 @@ const ProductList = ({products, setProducts, productsFilter, clickOnSubmit }) =>
 
     const [loading, setLoading] = useState(true);
     let productos = []
-    const {cart, setCart, añadirCarrito} = useContext(ItemsCart);
+    const {cart, setCart, addProduct, allProductsCart, removeProduct, productosCarrito} = useContext(ItemsCart);
     const q = query(collection(db, "products"));
 
     setTimeout(()=>{setLoading(false)}, 2000)
@@ -43,7 +43,7 @@ const ProductList = ({products, setProducts, productsFilter, clickOnSubmit }) =>
                     </Link>
                     <div className='product-button'> 
                         <Button variant="dark" 
-                        onClick={()=> {añadirCarrito(product)} } 
+                        onClick={()=> {addProduct(product)} } 
                         className='btn align-self-center'>
                                 Añadir al carrito
                         </Button>
