@@ -13,13 +13,9 @@ import { act } from "react-dom/test-utils";
 
 const NavigationBar = () => {
 
-    const { cart, setCart, addProduct, allProductsCart, removeProduct, productosCarrito} = useContext(ItemsCart);
+    //const { cart, setCart, addProduct, allProductsCart, removeProduct, productosCarrito, onCleanCart} = useContext(ItemsCart);
+    const { cart, removeProduct, productosCarrito, onCleanCart, total} = useContext(ItemsCart);
     const [active, setActive] = useState(false);
-    let total = 0
-
-    function onCleanCart () {
-        //return productosCarrito = []
-    }
 
     return (
         <> 
@@ -70,7 +66,7 @@ const NavigationBar = () => {
                                                     strokeWidth='1.5'
                                                     stroke='currentColor'
                                                     className='icon-close'
-                                                    onClick={() => removeProduct(product)}
+                                                    onClick={() => removeProduct(product.id)}
                                                 >
                                                     <path strokeLinecap='round' strokeLinejoin='round' d='M6 18L18 6M6 6l12 12'/>
                                                 </svg>

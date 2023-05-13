@@ -1,43 +1,75 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState } from "react";
 export const ItemsCart = createContext(); // Creamos el contexto utilizando el Hook
 
 let initialCart = 0;
 let q = JSON.parse(localStorage.getItem('quantity')) || [0, 0, 0, 0];
 let cant = [{id: q[0], q: 0}, {id: q[1], q: 0}, {id: q[2], q: 0}, {id: q[3], q: 0}];
-let productos = JSON.parse(localStorage.getItem('products')) || {}
-let total = 0
-//let productosCarrito = []
-//let newCart = []
-
-let añadirCarrito;
+let newCart = 0;
+let isDeleted = false;
 
 export const ItemsCartProvider = ({ children }) => {
   const [cart, setCart] = useState(initialCart)
   const [allProductsCart, setAllProductsCart] = useState(cant)
   const [productosCarrito, setProductosCarrito] = useState([])
+  const [total, setTotal] = useState(0);
 
   const addProduct =(item, quantity) =>{
     setCart(cart+1)
-    /*for (let i=0; i<q.length; i++) {
-      if (item.id == cant[i].id){
-        cant[i].q = cant[i].q + 1
-      }
-    }*/
     if(isInCart(item.id)){
       setProductosCarrito (productosCarrito.map(product =>{
-        console.log("entre")
         return product.id === item.id ? {...product,quantity:product.quantity + 1} : product
       }));
     }else{
-      quantity =1;
+      quantity = 1;
       setProductosCarrito ([...productosCarrito,{...item,quantity}]);
     }
-
+    upddatePrice(productosCarrito)
   }
   
   const isInCart = (id) => productosCarrito.find((product) => product.id === id) ? true : false;
+  const upddatePrice = (productos) => {
+    let updatePrice = 0;
+    console.log(productos)
+    productos.map((product) => updatePrice = updatePrice + (product.price*product.quantity));
+    console.log(updatePrice)
+    setTotal(updatePrice)
+  }
+  const removeProduct = (id) => {
+    setProductosCarrito(productosCarrito.filter((product) => product.id !== id));
+    isDeleted = true;
+    upddatePrice(productosCarrito);
+  }
+  const onCleanCart = () => {
+    setProductosCarrito([])
+    isDeleted = true;
+    upddatePrice(productosCarrito);
+  }
 
-  const removeProduct = (id) => setProductosCarrito(productosCarrito.filter((product) => product.id !== id));
+  if (isDeleted) {
+    productosCarrito.length === 0 ? setCart(0) : 
+      setCart (productosCarrito.map((product) => newCart = newCart + product.quantity ));
+    isDeleted = false;
+  }
+
+  return (
+    <ItemsCart.Provider 
+      value={{cart, setCart, addProduct, allProductsCart, removeProduct, productosCarrito, onCleanCart, total}}>
+        {children}
+    </ItemsCart.Provider>
+  )
+}
+
+/*
+
+  return (
+    <ItemsCart.Provider 
+      value={{cart, setCart, añadirCarrito, allProductsCart, onCleanCart, onDeleteProduct, productosCarrito}}>
+        {children}
+    </ItemsCart.Provider>
+  )
+
+*/
+
 
   /*if((productos.length != 0) && (productos.length != undefined)) {productos.map((producto) => {
     for (let i=0;i<allProductsCart.length;i++){
@@ -69,23 +101,3 @@ export const ItemsCartProvider = ({ children }) => {
         cant[i].q = cant[i].q + 1
       }
     }*/
-
-  return (
-    <ItemsCart.Provider 
-      value={{cart, setCart, addProduct, allProductsCart, removeProduct, productosCarrito}}>
-        {children}
-    </ItemsCart.Provider>
-  )
-}
-
-
-/*
-
-  return (
-    <ItemsCart.Provider 
-      value={{cart, setCart, añadirCarrito, allProductsCart, onCleanCart, onDeleteProduct, productosCarrito}}>
-        {children}
-    </ItemsCart.Provider>
-  )
-
-*/
