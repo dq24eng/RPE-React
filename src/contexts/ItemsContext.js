@@ -4,8 +4,8 @@ export const ItemsCart = createContext(); // Creamos el contexto utilizando el H
 let initialCart = 0;
 let q = JSON.parse(localStorage.getItem('quantity')) || [0, 0, 0, 0];
 let cant = [{id: q[0], q: 0}, {id: q[1], q: 0}, {id: q[2], q: 0}, {id: q[3], q: 0}];
-let newCart = 0;
 let isDeleted = false;
+let update = false;
 
 export const ItemsCartProvider = ({ children }) => {
   const [cart, setCart] = useState(initialCart)
@@ -23,32 +23,29 @@ export const ItemsCartProvider = ({ children }) => {
       quantity = 1;
       setProductosCarrito ([...productosCarrito,{...item,quantity}]);
     }
-    upddatePrice(productosCarrito)
+    update = true;
   }
-  
   const isInCart = (id) => productosCarrito.find((product) => product.id === id) ? true : false;
-  const upddatePrice = (productos) => {
-    let updatePrice = 0;
-    console.log(productos)
-    productos.map((product) => updatePrice = updatePrice + (product.price*product.quantity));
-    console.log(updatePrice)
-    setTotal(updatePrice)
-  }
   const removeProduct = (id) => {
     setProductosCarrito(productosCarrito.filter((product) => product.id !== id));
     isDeleted = true;
-    upddatePrice(productosCarrito);
+    update = true;
   }
   const onCleanCart = () => {
     setProductosCarrito([])
     isDeleted = true;
-    upddatePrice(productosCarrito);
+    update = true;
   }
-
   if (isDeleted) {
-    productosCarrito.length === 0 ? setCart(0) : 
-      setCart (productosCarrito.map((product) => newCart = newCart + product.quantity ));
+    let newCart = 0;
+    for (let i=0;i<productosCarrito.length;i++) newCart = newCart + productosCarrito[i].quantity
+    productosCarrito.length === 0 ? setCart(0) : setCart(newCart)
     isDeleted = false;
+  }
+  if (update) {
+    const total1 = productosCarrito.reduce((acumProduct, product) => acumProduct += product.price*product.quantity, 0)
+    setTotal(total1)
+    update = false;
   }
 
   return (

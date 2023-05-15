@@ -43,7 +43,7 @@ const ProductList = ({products, setProducts, productsFilter, clickOnSubmit }) =>
                     </Link>
                     <div className='product-button'> 
                         <Button variant="dark" 
-                        onClick={()=> {addProduct(product, product.quantity)} } 
+                        onClick={()=> addProduct(product, product.quantity) } 
                         className='btn align-self-center'>
                                 Añadir al carrito
                         </Button>

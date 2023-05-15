@@ -9,11 +9,9 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import {Link} from 'react-router-dom';
 // CONTEXT
 import { ItemsCart } from "../../contexts/ItemsContext";
-import { act } from "react-dom/test-utils";
 
 const NavigationBar = () => {
 
-    //const { cart, setCart, addProduct, allProductsCart, removeProduct, productosCarrito, onCleanCart} = useContext(ItemsCart);
     const { cart, removeProduct, productosCarrito, onCleanCart, total} = useContext(ItemsCart);
     const [active, setActive] = useState(false);
 
@@ -77,7 +75,12 @@ const NavigationBar = () => {
                                         <p>Total:</p>
                                         <p className='total-pagar'>${total}</p>
                                     </div>
-                                    <button className='btn-clear-all' onClick={onCleanCart}> Vaciar Carrito </button>
+                                    <div className="carrito-widget">
+                                        <button className='btn-clear-all' onClick={onCleanCart}> Vaciar Carrito </button>
+                                        <Link className='btn-clear-all irACarrito' to="/tienda/carrito" onClick={() => setActive(false)}> 
+                                            Ir al Carrito
+                                        </Link>
+                                    </div>
                                 </>
                             ) : ( <p className='cart-empty'>El carrito está vacío</p> )}
                         </div>

@@ -1,0 +1,25 @@
+.checkoutClass{
+    display: grid;
+    grid-template-columns: 60vw 40vw;
+    margin: 0 5vw 0 5vw;
+    
+}
+
+.miniCart {
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr 1fr;
+    grid-template-rows: 50px;
+    margin-right: 3vw;
+}
+
+.form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    margin: 0 50px 0 0;
+    gap: 15px;
+}
+
+.totalAPagar{
+    padding-top: 50px;
+}
