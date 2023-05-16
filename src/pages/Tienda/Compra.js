@@ -1,35 +1,33 @@
 import { useContext, useState } from "react";
 import './Compra.css'
-import {Button, TextField} from '@mui/material';
+import {Button, TextField, Alert, AlertTitle, Box, Collapse} from '@mui/material';
 // CONTEXT
 import { ItemsCart } from "../../contexts/ItemsContext";
 // FIREBASE
-import { addDoc, collection, getFirestore, setDoc, getDoc, doc } from "firebase/firestore";
+import { addDoc, collection, getFirestore, setDoc } from "firebase/firestore";
 
 const Compra = () => {
 
     const { productosCarrito, total} = useContext(ItemsCart);
-    const [nameInput, setNameInput] = useState('')
-    const [surnameInput, setSurnameInput] = useState('')
-    const [phoneInput, setPhoneInput] = useState('')
-    const [addressInput, setAddressInput] = useState('')
-    const [cityInput, setCityInput] = useState('')
-    const [stateInput, setStateInput] = useState('')
-    const [emailInput, setEmailInput] = useState('')
+    const [user, setUser] = useState({})
+    const [doc, setDoc] = useState('')
+    const [open, setOpen] = useState(true)
+    const [showAlert, setShowAltert] = useState(false)
 
+    const updateUser = (event) => {
+        setUser( user => ({...user, [event.target.name]: event.target.value }))
+    }
 
     const placeOrder = async () => {
         const order = {
-            buyer: {name: nameInput, surname: surnameInput, phone: phoneInput, address: addressInput, email: emailInput},
+            buyer: user,
             items: productosCarrito,
             total: total
         };
         const db = getFirestore();
         const ordersCollection = collection(db, "orders")
         addDoc(ordersCollection, order).then(({id}) => setDoc(id));
-        const docRef = doc(db, order.buyer);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) console.log(docSnap.data())
+        setTimeout(setShowAltert(true), 2000);
     };
 
     return (
@@ -39,24 +37,34 @@ const Compra = () => {
                 <div>
                     <p>Formulario</p>
                     <div className="form">
-                        <TextField id="nameInput" label="Nombre" variant="outlined" 
-                            onChange={(event) => {setNameInput(event.target.value)}} />
-                        <TextField id="surnameInput" label="Apellido" variant="outlined" 
-                            onChange={(event) => {setSurnameInput(event.target.value)}}/>
-                        <TextField id="phoneInput" label="Número de teléfono" variant="outlined" 
-                            onChange={(event) => {setPhoneInput(event.target.value)}}/>
-                        <TextField id="addressInput" label="Dirección" variant="outlined" 
-                            onChange={(event) => {setAddressInput(event.target.value)}}/>
-                        <TextField id="cityInput" label="Ciudad" variant="outlined" 
-                            onChange={(event) => {setCityInput(event.target.value)}}/>
-                        <TextField id="stateInput" label="Provincia" variant="outlined" 
-                            onChange={(event) => {setStateInput(event.target.value)}}/>
-                        <TextField id="emailInput" label="Email" variant="outlined" 
-                            onChange={(event) => {setEmailInput(event.target.value)}}/>
-                        <TextField id="newemailInput" label="Repita Email" variant="outlined" />
+                        <TextField name="name" label="Nombre" variant="outlined" 
+                            onChange={updateUser} />
+                        <TextField name="surname" label="Apellido" variant="outlined" 
+                            onChange={updateUser}/>
+                        <TextField name="phone" label="Número de teléfono" variant="outlined" 
+                            onChange={updateUser}/>
+                        <TextField name="address" label="Dirección" variant="outlined" 
+                            onChange={updateUser}/>
+                        <TextField name="city" label="Ciudad" variant="outlined" 
+                            onChange={updateUser}/>
+                        <TextField name="state" label="Provincia" variant="outlined" 
+                            onChange={updateUser}/>
+                        <TextField name="email" label="Email" variant="outlined" 
+                            onChange={updateUser}/>
+                        <TextField name="newemail" label="Repita Email" variant="outlined" />
                     </div>
                     <p className="totalAPagar">Total a Pagar ${total} </p>
                     <Button variant="contained" type="submit" color="success" onClick={()=> placeOrder()}> Comprar </Button>
+                    {
+                        showAlert ? 
+                            <Collapse in={open} >
+                                <Alert severity="success" onClose={()=>{setOpen(false)}} sx={{marginTop: "15px"}} >
+                                    <AlertTitle>Completado!</AlertTitle>
+                                        Tu compra se realizó con éxito. Número de Orden: {doc}
+                                </Alert>
+                            </Collapse>
+                            : ""
+                    }
                 </div>
                 <div>
                     <p>Tu compra</p>
